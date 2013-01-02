@@ -52,7 +52,7 @@ module.exports = {
 		
 		if( path.slice(0,5) === 'users' ) {
 			options.headers = {
-				Authorize: 'key='+ app.apikey
+				Authorize: 'key='+ module.exports.apikey
 			}
 		}
 		
