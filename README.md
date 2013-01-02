@@ -1,7 +1,7 @@
 nodejs-bitminter
 ================
 
-Bitminter API wrapper for Node.js
+[Bitminter.com](https://bitminter.com/) API wrapper for [Node.js](http://nodejs.org/)
 
 
 Installation
@@ -32,9 +32,8 @@ bitminter.get( 'users/MyName', function( err, user ) {
 ```
 
 
-Method: get()
--------------
-### ( path, [props], callback )
+Method: get ( path, [props], callback )
+--------------------------------------
 
 API docs: <https://bitminter.com/api>
 
@@ -48,7 +47,7 @@ This method takes three parameters:
 Callback function
 -----------------
 
-The callback receives two parameters: `err` and `data`. In case of an error the first parameter is an `Error` instance, otherwise `err` is null and `data` is an object.
+The callback receives two parameters: `err` and `data`. In case of an error the first parameter is an `Error` instance, otherwise `err` is null and `data` is an object or array.
 
 ```js
 function( err, data ) {
@@ -67,9 +66,9 @@ function( err, data ) {
 
 #### Errors
 
-	Error: disconnected        The connection was closed too early.
-	Error: invalid response    The API returned invalid data.
-	Error: request failed      Can't make request, see `err.details`.
+	Error: disconnected        The connection was closed too early
+	Error: invalid response    The API returned invalid data, see `err.details`
+	Error: request failed      Can't make request, see `err.details`
 
 
 Unlicense
