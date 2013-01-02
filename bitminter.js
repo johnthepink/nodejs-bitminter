@@ -68,8 +68,16 @@ module.exports = {
 			})
 			response.on( 'end', function() {
 				data = data.toString().trim()
-				if( !data.match( /^\{.*\}$/ )) {
-					cb( new Error('invalid response') )
+				if( !data.match( /^(\{.*\}|\[.*\])$/ )) {
+					var err = new Error('invalid response')
+					err.details = {
+						request: options,
+						response: {
+							headers: response.headers,
+							data: data
+						}
+					}
+					cb( err )
 				} else {
 					data = JSON.parse( data )
 					cb( null, data )
