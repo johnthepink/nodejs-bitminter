@@ -11,8 +11,8 @@ Installation
 	npm install ./nodejs-bitminter
 	
 
-Usage
------
+Example
+-------
 
 If you want to call **users** methods, you need to set the `apikey`.
 
@@ -28,13 +28,14 @@ If you want to call **users** methods, you need to set the `apikey`.
 
 Method: get()
 -------------
-#### ( path, [props], callback )
+### ( path, [props], callback )
+
+API docs: <https://bitminter.com/api>
 
 This method takes three parameters:
 
 	path        required    The API method to call, without '/api/' part.
 	props       optional    Object with GET arguments for method.
-	                        DO NOT PROVIDE THE APIKEY HERE!
 	callback    required    Function to receive data and errors.
 
 
@@ -58,7 +59,7 @@ The callback receives two parameters: `err` and `data`. In case of an error the 
 	```
 
 
-### Errors
+#### Errors
 
 	Error: disconnected        The connection was closed too early.
 	Error: invalid response    The API returned invalid data.
