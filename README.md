@@ -7,8 +7,14 @@ Bitminter API wrapper for Node.js
 Installation
 ------------
 
+From Github for the most recent code:
+
 	git clone https://github.com/fvdm/nodejs-bitminter
 	npm install ./nodejs-bitminter
+
+Or from NPM for the most recent and *stable* code:
+
+	npm install bitminter
 	
 
 Example
