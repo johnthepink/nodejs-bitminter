@@ -54,9 +54,9 @@ module.exports = {
 			method: 'GET'
 		}
 		
-		if( path.slice(0,5) === 'users' ) {
+		if( path.match( /^users(\/.*)?/ ) ) {
 			options.headers = {
-				Authorize: 'key='+ module.exports.apikey
+				Authorization: 'key='+ module.exports.apikey
 			}
 		}
 		
