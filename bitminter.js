@@ -43,10 +43,14 @@ module.exports = {
 			var props = {}
 		}
 		
+		if( Object.keys(props).length >= 1 ) {
+			path += '?'+ querystring.stringify( props )
+		}
+		
 		var options = {
 			host: 'bitminter.com',
 			port: 443,
-			path: '/api/'+ path +'?'+ querystring.stringify( props ),
+			path: '/api/'+ path,
 			method: 'GET'
 		}
 		
