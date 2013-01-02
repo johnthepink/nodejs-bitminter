@@ -22,14 +22,14 @@ Example
 
 If you want to call **users** methods, you need to set the `apikey`.
 
-	```js
-	var bitminter = require('bitminter')
-	bitminter.apikey = 'abc123xyz'
-	
-	bitminter.get( 'users/MyName', function( err, user ) {
-		console.log( err || user.hash_rate )
-	})
-	```
+```js
+var bitminter = require('bitminter')
+bitminter.apikey = 'abc123xyz'
+
+bitminter.get( 'users/MyName', function( err, user ) {
+	console.log( err || user.hash_rate )
+})
+```
 
 
 Method: get()
@@ -50,19 +50,19 @@ Callback function
 
 The callback receives two parameters: `err` and `data`. In case of an error the first parameter is an `Error` instance, otherwise `err` is null and `data` is an object.
 
-	```js
-	function( err, data ) {
-		if( err instance of Error ) {
-			console.log( err )
-			// err.stack
-			// err.message    // same as console.log( err )
-			// err.details    // only set when details are available
-		} else {
-			// all good
-			console.log( data )
-		}
+```js
+function( err, data ) {
+	if( err instance of Error ) {
+		console.log( err )
+		// err.stack
+		// err.message    // same as console.log( err )
+		// err.details    // only set when details are available
+	} else {
+		// all good
+		console.log( data )
 	}
-	```
+}
+```
 
 
 #### Errors
