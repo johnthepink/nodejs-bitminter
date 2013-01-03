@@ -21,7 +21,7 @@
   "engines": {
     "node":               "*"
   },
-  "keywords":             ["bitminter", "bitcoins", "api"],
+  "keywords":             ["bitminter", "bitcoin", "api"],
   "license": {
     "type":               "Public Domain",
     "url":                "https://github.com/fvdm/nodejs-bitminter/raw/master/UNLICENSE"
