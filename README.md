@@ -20,7 +20,7 @@ var bitminter = require ('bitminter') ({
   apikey: 'abc123'
 });
 
-bitminter.users.get ('MyName', function (err, user) {
+bitminter.users.get (function (err, user) {
   if (err) { return console.log (err); }
   console.log (user.hash_rate);
 });
