@@ -50,6 +50,14 @@ function talk (path, props, cb) {
       return;
     }
 
+    if (res.statusCode >= 300) {
+      error = new Error ('API error');
+      error.statusCode = res.statusCode;
+      error.data = data;
+      cb (error);
+      return;
+    }
+
     try {
       data = JSON.parse (data);
     } catch (e) {
