@@ -3,6 +3,8 @@ bitminter
 
 Bitminter API methods for Node.js
 
+[![Build Status](https://travis-ci.org/fvdm/nodejs-bitminter.svg?branch=master)](https://travis-ci.org/fvdm/nodejs-bitminter)
+
 * [Node.js](https://www.nodejs.org)
 * [Bitminter](https://bitminter.com)
 * [API documentation](https://bitminter.com/api)
