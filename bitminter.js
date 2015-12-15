@@ -1,95 +1,133 @@
 /*
-Name:      bitminter.js
-Author:    Franklin van de Meent
-Source:    https://github.com/fvdm/nodejs-bitminter
-Feedback:  https://github.com/fvdm/nodejs-bitminter/issues
-License:   Unlicense / Public Domain
-
-This is free and unencumbered software released into the public domain.
-
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any
-means.
-
-In jurisdictions that recognize copyright laws, the author or authors
-of this software dedicate any and all copyright interest in the
-software to the public domain. We make this dedication for the benefit
-of the public at large and to the detriment of our heirs and
-successors. We intend this dedication to be an overt act of
-relinquishment in perpetuity of all present and future rights to this
-software under copyright law.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-
-For more information, please refer to <http://unlicense.org/>
+Name:         bitminter
+Description:  Bitminter API methods for Node.js
+Author:       Franklin van de Meent (https://frankl.in)
+Source:       https://github.com/fvdm/nodejs-bitminter
+Feedback:     https://github.com/fvdm/nodejs-bitminter/issues
+License:      Unlicense (see UNLICENSE file)
 */
 
-var https = require('https'),
-    querystring = require('querystring')
+var httpreq = require ('httpreq');
+var app = {};
+var config = {};
 
-module.exports = {
-	apikey: '',
-	
-	get: function( path, props, cb ) {
-		if( !cb && typeof props === 'function' ) {
-			var cb = props
-			var props = {}
-		}
-		
-		if( Object.keys(props).length >= 1 ) {
-			path += '?'+ querystring.stringify( props )
-		}
-		
-		var options = {
-			host: 'bitminter.com',
-			port: 443,
-			path: '/api/'+ path,
-			method: 'GET'
-		}
-		
-		if( path.match( /^users(\/.*)?/ ) ) {
-			options.headers = {
-				Authorization: 'key='+ module.exports.apikey
-			}
-		}
-		
-		var req = https.request( options, function( response ) {
-			var data = ''
-			response.on( 'data', function( ch ) { data += ch })
-			response.on( 'close', function() {
-				cb( new Error('disconnected') )
-			})
-			response.on( 'end', function() {
-				data = data.toString().trim()
-				if( !data.match( /^(\{.*\}|\[.*\])$/ )) {
-					var err = new Error('invalid response')
-					err.details = {
-						request: options,
-						response: {
-							headers: response.headers,
-							data: data
-						}
-					}
-					cb( err )
-				} else {
-					data = JSON.parse( data )
-					cb( null, data )
-				}
-			})
-		})
-		
-		req.on( 'error', function( error ) {
-			var err = new Error('request failed')
-			err.details = error
-		})
-		
-		req.end()
-	}
+
+/**
+ * HTTP communication
+ *
+ * @param path {string} Request path
+ * @param props {object} Query parameters
+ * @param cb {function} Callback function
+ * @return {void}
+ */
+
+function talk (path, props, cb) {
+  var url = 'https://bitminter.com/api/' + path;
+  var opts = {
+    headers: {
+      'User-Agent': 'bitminter.js'
+    }
+  };
+
+  if (typeof props === 'function') {
+    cb = props;
+    props = {};
+  }
+
+  if (path.match (/^users/)) {
+    opts.headers.Aithorization = 'key=' + module.exports.apikey;
+  }
+
+  opts.parameters = props;
+  opts.timeout = config.timeout;
+
+  httpreq.get (url, opts, function (err, res) {
+    var error = null;
+    var data = res && res.body || null;
+
+    if (err) {
+      cb (err);
+      return;
+    }
+
+    try {
+      data = JSON.parse (data);
+    } catch (e) {
+      error = new Error ('invalid response');
+      error.details = {
+        request: opts,
+        response: {
+          headers: res.headers,
+          statusCode: res.statusCode,
+          data: data
+        }
+      };
+    }
+
+    cb (error, data);
+  });
 }
+
+
+app.pool = {};
+
+app.pool.stats = function (callback) {
+  talk ('/api/pool/stats', callback);
+};
+
+app.pool.hashrate = function (callback) {
+  talk ('/api/pool/hashrate', callback);
+};
+
+app.pool.workers = function (callback) {
+  talk ('/api/pool/workers', callback);
+};
+
+app.pool.users = function (callback) {
+  talk ('/api/pool/users', callback);
+};
+
+app.pool.round = function (callback) {
+  talk ('/api/pool/round', callback);
+};
+
+app.pool.blocks = function (props, callback) {
+  talk ('/api/pool/blocks', props, callback);
+};
+
+app.pool.shift = function (props, callback) {
+  talk ('/api/pool/shift', props, callback);
+};
+
+app.pool.top50 = function (callback) {
+  talk ('/api/pool/top50', callback);
+};
+
+
+app.users = {};
+
+app.users.get = function (username, callback) {
+  var path = '/api/users';
+
+  if (typeof username === 'function') {
+    callback = username;
+  } else {
+    path += '/' + username;
+  }
+
+  talk (path, callback);
+};
+
+
+/**
+ * Module setup
+ *
+ * @param conf {object} Configuration parameters
+ * @return {object} Module methods
+ */
+
+module.exports = function (conf) {
+  config.apikey = conf.apikey || null;
+  config.timeout = conf.timeout || 5000;
+  return app;
+};

@@ -1,29 +1,31 @@
 {
   "author": {
-    "name":               "Franklin van de Meent",
-    "email":              "fr@nkl.in",
-    "url":                "http://frankl.in"
+    "name": "Franklin van de Meent",
+    "email": "fr@nkl.in",
+    "url": "https://frankl.in"
   },
-  "name":                 "bitminter",
-  "description":          "API wrapper for BitMinter.com",
-  "version":              "1.0.0",
+  "name": "bitminter",
+  "description": "API wrapper for BitMinter.com",
+  "version": "1.0.0",
   "repository": {
-    "type":               "git",
-    "url":                "git://github.com/fvdm/nodejs-bitminter.git"
+    "type": "git",
+    "url": "git://github.com/fvdm/nodejs-bitminter.git"
   },
   "bugs": {
-    "url":                "https://github.com/fvdm/nodejs-bitminter/issues"
+    "url": "https://github.com/fvdm/nodejs-bitminter/issues"
   },
-  "main":                 "bitminter.js",
-  "dependencies":         {},
-  "devDependencies":      {},
-  "optionalDependencies": {},
+  "main": "bitminter.js",
+  "dependencies": {
+    "httpreq": "0.4.x"
+  },
+  "devDependencies": {},
   "engines": {
-    "node":               "*"
+    "node": ">=0.8.0"
   },
-  "keywords":             ["bitminter", "bitcoin", "api"],
-  "license": {
-    "type":               "Public Domain",
-    "url":                "https://github.com/fvdm/nodejs-bitminter/raw/master/UNLICENSE"
-  }
+  "keywords": [
+    "bitminter",
+    "bitcoin",
+    "api"
+  ],
+  "license": "Unlicense"
 }
