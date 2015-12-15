@@ -142,5 +142,105 @@ queue.push (function () {
 });
 
 
+queue.push (function () {
+  bitminter.pool.workers (function (err, data) {
+    doTest (err, 'pool.workers', [
+      ['type', typeof data === 'number']
+    ]);
+  });
+});
+
+
+queue.push (function () {
+  bitminter.pool.users (function (err, data) {
+    doTest (err, 'pool.users', [
+      ['type', typeof data === 'number']
+    ]);
+  });
+});
+
+
+queue.push (function () {
+  bitminter.pool.round (function (err, data) {
+    doTest (err, 'pool.round', [
+      ['type', data instanceof Object]
+    ]);
+  });
+});
+
+
+queue.push (function () {
+  bitminter.pool.blocks (function (err, data) {
+    doTest (err, 'pool.blocks normal', [
+      ['type', data instanceof Array]
+    ]);
+  });
+});
+
+
+queue.push (function () {
+  bitminter.pool.blocks ({ max: 3 }, function (err, data) {
+    doTest (err, 'pool.blocks option', [
+      ['type', data instanceof Array],
+      ['amount', data.length <= 3]
+    ]);
+  });
+});
+
+
+queue.push (function () {
+  bitminter.pool.shifts (function (err, data) {
+    doTest (err, 'pool.shifts normal', [
+      ['type', data instanceof Array]
+    ]);
+  });
+});
+
+
+queue.push (function () {
+  bitminter.pool.shifts ({ max: 3 }, function (err, data) {
+    doTest (err, 'pool.shifts option', [
+      ['type', data instanceof Array],
+      ['amount', data.length <= 3]
+    ]);
+  });
+});
+
+
+queue.push (function () {
+  bitminter.pool.top50 (function (err, data) {
+    doTest (err, 'pool.top50', [
+      ['type', data instanceof Object]
+    ]);
+  });
+});
+
+
+queue.push (function () {
+  if (!config.apikey) {
+    log ('info', 'users.get self skipped (no apikey)');
+  } else {
+    bitminter.users.get (function (err, data) {
+      doTest (err, 'users.get self', [
+        ['type', data instanceof Object]
+      ]);
+    });
+  }
+});
+
+
+queue.push (function () {
+  if (!config.apikey) {
+    log ('info', 'users.get username skipped (no apikey)');
+  } else {
+    bitminter.users.get ('th1nk3r', function (err, data) {
+      doTest (err, 'users.get username', [
+        ['type', data instanceof Object]
+      ]);
+    });
+  }
+});
+
+
 // Start the tests
 queue[0] ();
