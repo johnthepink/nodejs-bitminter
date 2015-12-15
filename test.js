@@ -23,38 +23,54 @@ var config = {
 var bitminter = app (config);
 
 
-function log (str) {
-  var colors = {
+// Logging
+function styleStr (style, str) {
+  var styles = {
     bold: '\u001b[1m',
-    reset: '\u001b[0m',
+    plain: '\u001b[0m',
+    boldred: '\u001b[1m\u001b[31m',
     red: '\u001b[31m',
     green: '\u001b[32m',
-    yellow: '\u001b[33m'
+    yellow: '\u001b[33m',
+    gray: '\u001b[90m'
   };
 
-  str = str.replace (/:([a-z]):/g, function (s, c) {
-    if (!colors [c]) {
-      return ':' + c + ':';
-    }
+  return colorTerm ? styles [style] + str + styles.plain : str;
+}
 
-    return colorTerm ? colors [c] : '';
-  });
-
-  if (colorTerm) {
-    str += color.reset;
+function log (type, str) {
+  if (!str) {
+    str = type;
+    type = 'plain';
   }
 
-  console.log (str);
+  if (typeof str === 'object') {
+    console.dir (str, {
+      depth: null,
+      colors: colorTerm
+    });
+
+    return;
+  }
+
+  switch (type) {
+    case 'info': console.log (styleStr ('yellow', 'info') + ' - ' + str); break;
+    case 'fail': console.log (styleStr ('red', 'fail') + ' - ' + str); break;
+    case 'good': console.log (styleStr ('green', 'good') + ' - ' + str); break;
+    case 'bold': console.log (styleStr ('bold', str)); break;
+    case 'error': console.log (styleStr ('boldred', str)); break;
+    case 'plain': default: console.log (str); break;
+  }
 }
 
 
 // handle exits
 process.on ('exit', function () {
   if (errors === 0) {
-    log ('\n:bold:DONE, no errors.\n');
+    log ('bold', '\nDONE, no errors.\n');
     process.exit (0);
   } else {
-    log ('\n:bold:FAIL, ' + errors + ' error' + (errors > 1 ? 's' : '') + ' occurred!\n');
+    log ('bold', '\nFAIL, ' + errors + ' error' + (errors > 1 ? 's' : '') + ' occurred!\n');
     process.exit (1);
   }
 });
@@ -82,7 +98,7 @@ function doTest (err, label, tests) {
   var testErrors = [];
 
   if (err instanceof Error) {
-    log (label + ': :bold::red:ERROR\n');
+    log ('fail', label);
     console.dir (err, { depth: null, colors: colorTerm });
     console.log ();
     console.log (err.stack);
@@ -97,9 +113,9 @@ function doTest (err, label, tests) {
     });
 
     if (testErrors.length === 0) {
-      log (label + ': :bold::green:ok');
+      log ('good', label);
     } else {
-      log (label + ': :bold::red:failed:reset:  (' + testErrors.join (', ') + ')');
+      log ('fail', label + ' (' + testErrors.join (', ') + ')');
     }
   }
 
