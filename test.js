@@ -125,7 +125,7 @@ function doTest (err, label, tests) {
 
 // METHODS
 queue.push (function () {
-  app.pool.stats (function (err, data) {
+  bitminter.pool.stats (function (err, data) {
     doTest (err, 'pool.stats', [
       ['type', data instanceof Object]
     ]);
@@ -134,7 +134,7 @@ queue.push (function () {
 
 
 queue.push (function () {
-  app.pool.hashrate (function (err, data) {
+  bitminter.pool.hashrate (function (err, data) {
     doTest (err, 'pool.hashrate', [
       ['type', typeof data === 'number']
     ]);
