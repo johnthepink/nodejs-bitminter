@@ -107,14 +107,7 @@ function doTest (err, label, tests) {
 }
 
 
-// METHOD
-queue.push (function () {
-  doTest (null, 'module', [
-    ['function type', typeof geo === 'function']
-  ]);
-});
-
-
+// METHODS
 queue.push (function () {
   app.pool.stats (function (err, data) {
     doTest (err, 'pool.stats', [
