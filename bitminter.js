@@ -62,14 +62,8 @@ function talk (path, props, cb) {
       data = JSON.parse (data);
     } catch (e) {
       error = new Error ('invalid response');
-      error.details = {
-        request: opts,
-        response: {
-          headers: res.headers,
-          statusCode: res.statusCode,
-          data: data
-        }
-      };
+      error.statusCode = res.statusCode;
+      error.data = data;
     }
 
     cb (error, data);
