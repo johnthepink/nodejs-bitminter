@@ -1,74 +1,173 @@
-nodejs-bitminter
-================
+bitminter
+=========
 
-[Bitminter.com](https://bitminter.com/) API wrapper for [Node.js](http://nodejs.org/)
+Bitminter API methods for Node.js
+
+* [Node.js](https://www.nodejs.org)
+* [Bitminter](https://bitminter.com)
+* [API documentation](https://bitminter.com/api)
+
+
+Example
+-------
+
+If you want to call `users` methods,
+you need to set the `apikey`.
+The `pool` methods work without it.
+
+```js
+var bitminter = require ('bitminter') ({
+  apikey: 'abc123'
+});
+
+bitminter.users.get ('MyName', function (err, user) {
+  if (err) { return console.log (err); }
+  console.log (user.hash_rate);
+});
+```
 
 
 Installation
 ------------
 
-From Github for the most recent code:
+`npm install bitminter`
 
-	git clone https://github.com/fvdm/nodejs-bitminter
-	npm install ./nodejs-bitminter
 
-Or from NPM for the most recent and *stable* code:
+Configuration
+-------------
 
-	npm install bitminter
-	
+The module function takes a configuration _object_.
 
-Example
--------
 
-If you want to call **users** methods, you need to set the `apikey`.
+setting | type   | default | description
+:-------|:-------|:--------|:---------------
+apikey  | string |         | Account API key
+timeout | number | 5000    | Wait time in milliseconds
+
 
 ```js
-var bitminter = require('bitminter')
-bitminter.apikey = 'abc123xyz'
+var config = {
+  apikey: 'abc123',
+  timeout: 30000
+};
 
-bitminter.get( 'users/MyName', function( err, user ) {
-	console.log( err || user.hash_rate )
-})
+var bitminter = require ('bitminter') (config);
 ```
 
 
-Method: get ( path, [props], callback )
---------------------------------------
+Pool methods
+------------
 
-API docs: <https://bitminter.com/api>
+### pool.stats
+**( callback )**
 
-This method takes three parameters:
-
-	path        required    The API method to call, without '/api/' part.
-	props       optional    Object with GET arguments for method.
-	callback    required    Function to receive data and errors.
-
-
-Callback function
------------------
-
-The callback receives two parameters: `err` and `data`. In case of an error the first parameter is an `Error` instance, otherwise `err` is null and `data` is an object or array.
+Pool statistics _object_
 
 ```js
-function( err, data ) {
-	if( err instance of Error ) {
-		console.log( err )
-		// err.stack
-		// err.message    // same as console.log( err )
-		// err.details    // only set when details are available
-	} else {
-		// all good
-		console.log( data )
-	}
-}
+bitminter.pool.stats (console.log);
 ```
 
 
-#### Errors
+### pool.hashrate
+**( callback )**
 
-	Error: disconnected        The connection was closed too early
-	Error: invalid response    The API returned invalid data, see `err.details`
-	Error: request failed      Can't make request, see `err.details`
+Current pool hash rate _number_
+
+```js
+bitminter.pool.hashrate (console.log);
+```
+
+
+### pool.workers
+**( callback )**
+
+Current pool workers _number_
+
+```js
+bitminter.pool.workers (console.log);
+```
+
+
+### pool.users
+**( callback )**
+
+Current pool users _number_
+
+```js
+bitminter.pool.users (console.log);
+```
+
+
+### pool.round
+**( callback )**
+
+Current pool round _object_
+
+```js
+bitminter.pool.round (console.log);
+```
+
+
+### pool.blocks
+**( [options], callback )**
+
+Current pool blocks _array_
+
+
+option    | type   | default | description
+:---------|:-------|:--------|:---------------------------
+max       | number | 10      | Entries to return
+offset    | number | 0       | Skip this many entries
+commodity | string | all     | Limit commodity, i.e. `BTC`
+
+
+```js
+bitminter.pool.blocks ({ max: 5 }, console.log);
+```
+
+
+### pool.shifts
+**( [options], callback )**
+
+Current pool shifts _array_
+
+
+option | type   | default | description
+:------|:-------|:--------|:----------------------
+max    | number | 10      | Entries to return
+offset | number | 0       | Skip this many entries
+
+
+```js
+bitminter.pool.shifts ({ offset: 10 }, console.log);
+```
+
+
+### pool.top50
+**( callback )**
+
+Pool top 50 _object_
+
+```js
+bitminter.pool.top50 (console.log);
+```
+
+
+Users methods
+-------------
+
+### users.get
+**( [username], callback )**
+
+Get stats and details _object_ about a user or yourself.
+
+```js
+// Yourself
+bitminter.users.get (console.log);
+
+// Someone else
+bitminter.users.get ('SomeUser', console.log);
+```
 
 
 Unlicense
@@ -98,3 +197,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <http://unlicense.org/>
+
+
+Author
+------
+
+Franklin van de Meent
+| [Website](https://frankl.in)
+| [Github](https://github.com/fvdm)
