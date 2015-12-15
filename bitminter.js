@@ -22,7 +22,7 @@ var config = {};
  */
 
 function talk (path, props, cb) {
-  var url = 'https://bitminter.com/api/' + path;
+  var url = 'https://bitminter.com/api' + path;
   var opts = {
     headers: {
       'User-Agent': 'bitminter.js'
@@ -72,42 +72,42 @@ function talk (path, props, cb) {
 app.pool = {};
 
 app.pool.stats = function (callback) {
-  talk ('/api/pool/stats', callback);
+  talk ('/pool/stats', callback);
 };
 
 app.pool.hashrate = function (callback) {
-  talk ('/api/pool/hashrate', callback);
+  talk ('/pool/hashrate', callback);
 };
 
 app.pool.workers = function (callback) {
-  talk ('/api/pool/workers', callback);
+  talk ('/pool/workers', callback);
 };
 
 app.pool.users = function (callback) {
-  talk ('/api/pool/users', callback);
+  talk ('/pool/users', callback);
 };
 
 app.pool.round = function (callback) {
-  talk ('/api/pool/round', callback);
+  talk ('/pool/round', callback);
 };
 
 app.pool.blocks = function (props, callback) {
-  talk ('/api/pool/blocks', props, callback);
+  talk ('/pool/blocks', props, callback);
 };
 
 app.pool.shifts = function (props, callback) {
-  talk ('/api/pool/shifts', props, callback);
+  talk ('/pool/shifts', props, callback);
 };
 
 app.pool.top50 = function (callback) {
-  talk ('/api/pool/top50', callback);
+  talk ('/pool/top50', callback);
 };
 
 
 app.users = {};
 
 app.users.get = function (username, callback) {
-  var path = '/api/users';
+  var path = '/users';
 
   if (typeof username === 'function') {
     callback = username;
