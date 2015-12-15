@@ -31,7 +31,7 @@ function talk (path, props, cb) {
 
   if (typeof props === 'function') {
     cb = props;
-    props = {};
+    props = null;
   }
 
   if (path.match (/^users/)) {
