@@ -98,6 +98,11 @@ app.pool.blocks = function (props, callback) {
 };
 
 app.pool.shifts = function (props, callback) {
+  if (typeof props === 'function') {
+    callback = props;
+    props = {};
+  }
+
   talk ('/pool/shifts', props, callback);
 };
 
