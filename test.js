@@ -6,10 +6,11 @@ License:        Unlicense (public domain)
 */
 
 var app = require ('./');
+var colorTerm = String (process.env.TERM) .match (/color$/);
+
 var errors = 0;
 var queue = [];
 var next = 0;
-var colorTerm = String (process.env.TERM) .match (/color$/);
 
 
 // Setup
