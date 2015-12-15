@@ -95,8 +95,8 @@ app.pool.blocks = function (props, callback) {
   talk ('/api/pool/blocks', props, callback);
 };
 
-app.pool.shift = function (props, callback) {
-  talk ('/api/pool/shift', props, callback);
+app.pool.shifts = function (props, callback) {
+  talk ('/api/pool/shifts', props, callback);
 };
 
 app.pool.top50 = function (callback) {
