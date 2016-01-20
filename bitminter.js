@@ -25,7 +25,8 @@ function talk (path, props, cb) {
   var url = 'https://bitminter.com/api' + path;
   var opts = {
     headers: {
-      'User-Agent': 'bitminter.js'
+      'User-Agent': 'bitminter.js',
+      'Access-Control-Allow-Origin': 'bitminter.com'
     }
   };
 
