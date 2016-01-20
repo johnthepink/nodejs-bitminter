@@ -26,7 +26,8 @@ function talk (path, props, cb) {
   var opts = {
     headers: {
       'User-Agent': 'bitminter.js',
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'text/plain'
     }
   };
 
